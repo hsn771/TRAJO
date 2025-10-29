@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 23, 2025 at 05:26 PM
+-- Generation Time: Oct 29, 2025 at 07:42 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,6 +34,15 @@ CREATE TABLE `categories` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Pent', '2025-10-29 10:28:37', '2025-10-29 10:28:37'),
+(2, 'T-shirt', '2025-10-29 10:28:44', '2025-10-29 10:28:44'),
+(3, 'Punjabi', '2025-10-29 10:28:53', '2025-10-29 10:28:53');
+
 -- --------------------------------------------------------
 
 --
@@ -55,6 +64,13 @@ CREATE TABLE `coupons` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `coupons`
+--
+
+INSERT INTO `coupons` (`id`, `code`, `discount_type`, `discount_value`, `usage_limit`, `used_count`, `min_order_amount`, `start_date`, `end_date`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, '2FVESF', 2, 100.00, 1, NULL, 2.00, '2025-10-29', '2025-11-08', 1, '2025-10-29 10:26:52', '2025-10-29 10:26:52');
+
 -- --------------------------------------------------------
 
 --
@@ -73,6 +89,13 @@ CREATE TABLE `customers` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `customers`
+--
+
+INSERT INTO `customers` (`id`, `name`, `email`, `phone`, `address`, `division_id`, `district_id`, `password`, `created_at`, `updated_at`) VALUES
+(1, 'Jesan', 'jesan@gmail.com', '013', 'Halishahar', NULL, NULL, '$2y$12$wMhxF0YtUdVUXrn4mZeLV.rCuEKyCIJOXR0nh8jIvTg5eopvbMdhe', '2025-10-29 11:52:08', '2025-10-29 11:52:08');
 
 -- --------------------------------------------------------
 
@@ -250,7 +273,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (12, '2019_11_27_040803_create_upazilas_table', 2),
 (13, '2021_09_13_035432_create_unions_table', 2),
 (14, '2014_10_12_100000_create_password_resets_table', 3),
-(15, '2025_10_23_150245_create_coupons_table', 3);
+(15, '2025_10_23_150245_create_coupons_table', 3),
+(16, '2025_10_29_171852_create_order_items_table', 4),
+(17, '2025_10_29_182734_create_wishlists_table', 4);
 
 -- --------------------------------------------------------
 
@@ -264,6 +289,18 @@ CREATE TABLE `orders` (
   `discount_amount` decimal(10,2) NOT NULL DEFAULT 0.00,
   `status` varchar(50) NOT NULL DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -326,6 +363,14 @@ CREATE TABLE `products` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `category_id`, `image_url`, `created_at`, `updated_at`) VALUES
+(1, 'Mens Premium Sports Joggers - Interactive', 'Lightweight, breathable pants designed for comfort and movement.', 699.00, 1, '1761755414.jpg', '2025-10-29 10:30:14', '2025-10-29 10:32:35'),
+(2, 'Premium Boys Trouser - Ironman', 'Lightweight, breathable pants designed for comfort and movement.', 599.00, 1, '1761756650.jpg', '2025-10-29 10:50:50', '2025-10-29 10:50:50');
 
 -- --------------------------------------------------------
 
@@ -5446,6 +5491,20 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Tohidur Rahman', 'tohid@gmail.com', NULL, '$2y$12$wC7DvgCXW0Q6BNuobiqUkOG4bzrJwY/lOWvjPZlRJD1EIOQFkKyO2', NULL, '2025-10-23 09:09:20', '2025-10-23 09:09:20');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wishlists`
+--
+
+CREATE TABLE `wishlists` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -5507,6 +5566,12 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
@@ -5553,6 +5618,13 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
+-- Indexes for table `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `wishlists_user_id_product_id_unique` (`user_id`,`product_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -5560,19 +5632,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `coupons`
 --
 ALTER TABLE `coupons`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `discounts`
@@ -5602,12 +5674,18 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -5620,7 +5698,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `unions`
@@ -5639,6 +5717,12 @@ ALTER TABLE `upazilas`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `wishlists`
+--
+ALTER TABLE `wishlists`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

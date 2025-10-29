@@ -7,7 +7,8 @@
     <meta name="keywords" content="Male_Fashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Male-Fashion | Template</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>TRAJO</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
@@ -35,17 +36,10 @@
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__option">
             <div class="offcanvas__links">
-                <a href="#">Sign in</a>
-                <a href="#">FAQs</a>
+                <a href="{{ route('customer.login') }}">Customer Sign in</a>
+                <a href="{{ route('customer.register') }}">Customer Register</a>
             </div>
-            <div class="offcanvas__top__hover">
-                <span>Usd <i class="arrow_carrot-down"></i></span>
-                <ul>
-                    <li>USD</li>
-                    <li>EUR</li>
-                    <li>USD</li>
-                </ul>
-            </div>
+            
         </div>
         <div class="offcanvas__nav__option">
             <a href="#" class="search-switch"><img src="{{ asset('assets/img/icon/search.png') }}" alt=""></a>
@@ -73,16 +67,8 @@
                     <div class="col-lg-6 col-md-5">
                         <div class="header__top__right">
                             <div class="header__top__links">
-                                <a href="#">Sign in</a>
-                                <a href="#">FAQs</a>
-                            </div>
-                            <div class="header__top__hover">
-                                <span>Usd <i class="arrow_carrot-down"></i></span>
-                                <ul>
-                                    <li>USD</li>
-                                    <li>EUR</li>
-                                    <li>USD</li>
-                                </ul>
+                                <a href="{{ route('customer.login') }}">Customer Sign in</a>
+                                <a href="{{ route('customer.register') }}">Customer Register</a>
                             </div>
                         </div>
                     </div>
@@ -118,9 +104,8 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="{{ asset('assets/img/icon/search.png')}}" alt=""></a>
-                        <a href="#"><img src="{{ asset('assets/img/icon/heart.png')}}" alt=""></a>
-                        <a href="#"><img src="{{ asset('assets/img/icon/cart.png')}}" alt=""> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <a href="{{ route('wishlist.index') }}"><img src="{{ asset('assets/img/icon/heart.png')}}" alt=""></a>
+                        <a href="{{ route('cart.view') }}"><img src="{{ asset('assets/img/icon/cart.png')}}" alt=""> <span></span></a>
                     </div>
                 </div>
             </div>
@@ -220,6 +205,57 @@
     <script src="{{asset ('assets/js/mixitup.min.js') }}"></script>
     <script src="{{asset ('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{asset ('assets/js/main.js') }}"></script>
+    @stack('scripts')
+	<script>
+		function addToCart(productId) {
+			fetch("{{ route('cart.add') }}", {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+				},
+				body: JSON.stringify({ product_id: productId })
+			})
+			.then(res => res.json())
+			.then(data => {
+				alert(data.message);
+				// Update cart count
+				fetchCartCount();
+			});
+		}
+
+		function fetchCartCount() {
+			fetch("{{ route('cart.count') }}")
+			.then(res => res.json())
+			.then(data => {
+				document.querySelector('.icon-shopping-cart').nextSibling.textContent = ` Cart [${data.count}]`;
+			});
+		}
+		function removeFromWishlist(wishlistId) {
+			fetch(`/wishlist/${wishlistId}`, {
+				method: 'DELETE',
+				headers: {
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+					'Accept': 'application/json'
+				}
+			})
+			.then(res => res.json())
+			.then(data => {
+				alert(data.message);
+				document.querySelector(`#wishlist-item-${wishlistId}`).remove();
+				fetchWishlistCount();
+			});
+		}
+
+		function fetchWishlistCount() {
+			fetch("{{ route('wishlist.count') }}")
+			.then(res => res.json())
+			.then(data => {
+				document.querySelector('.icon-heart').nextSibling.textContent = ` Wishlist [${data.count}]`;
+			});
+		}
+
+	</script>
 </body>
 
 </html>

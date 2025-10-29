@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class FrontendController extends Controller
 {
     function welcome() {
-        return view ('welcome');
+        $products = \App\Models\Product::all();
+        return view ('welcome', compact('products'));
     }
 }
