@@ -78,10 +78,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                @else
-                                    <a href="{{ route('customer.login') }}">Login</a> /
-                                    <a href="{{ route('customer.register') }}">Register</a>
-                                @endif
+                                
                             </div>
                         </div>
                     </div>

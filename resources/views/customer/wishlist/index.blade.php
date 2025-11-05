@@ -8,7 +8,7 @@
         @forelse($wishlists as $wishlist)
             <div class="col-md-3 mb-4 text-center" id="wishlist-item-{{ $wishlist->id }}">
                 <div class="product-entry border">
-                    <a href="{{ route('productdescription', $wishlist->product->id) }}" class="prod-img">
+                    <a href="#" class="prod-img">
                         <img src="{{ asset('uploads/' . $wishlist->product->image_url) }}" class="img-fluid" alt="">
                     </a>
                     <div class="desc">
