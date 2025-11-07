@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 29, 2025 at 07:42 PM
+-- Generation Time: Nov 07, 2025 at 06:18 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -275,7 +275,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (14, '2014_10_12_100000_create_password_resets_table', 3),
 (15, '2025_10_23_150245_create_coupons_table', 3),
 (16, '2025_10_29_171852_create_order_items_table', 4),
-(17, '2025_10_29_182734_create_wishlists_table', 4);
+(17, '2025_10_29_182734_create_wishlists_table', 4),
+(18, '2025_11_07_145855_add_columns_to_orders_table', 5),
+(19, '2025_11_07_150544_add_columns_to_orders_items_table', 6);
 
 -- --------------------------------------------------------
 
@@ -285,12 +287,27 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 CREATE TABLE `orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `customer_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `coupon_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `total_price` decimal(10,2) NOT NULL,
+  `final_price` decimal(10,2) NOT NULL,
+  `district_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `division_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `discount_amount` decimal(10,2) NOT NULL DEFAULT 0.00,
   `status` varchar(50) NOT NULL DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `customer_id`, `coupon_id`, `total_price`, `final_price`, `district_id`, `division_id`, `notes`, `address`, `user_id`, `discount_amount`, `status`, `created_at`, `updated_at`) VALUES
+(3, NULL, NULL, 699.00, 699.00, 8, 1, 'Please deliver the product as early as possible.', 'Halishahar', 1, 0.00, 'delivered', '2025-11-07 09:09:13', '2025-11-07 09:27:55');
 
 -- --------------------------------------------------------
 
@@ -300,9 +317,21 @@ CREATE TABLE `orders` (
 
 CREATE TABLE `order_items` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `order_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 1,
+  `price` decimal(10,2) NOT NULL,
+  `line_total` decimal(10,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`, `line_total`, `created_at`, `updated_at`) VALUES
+(1, 3, 1, 1, 699.00, 699.00, '2025-11-07 09:09:13', '2025-11-07 09:09:13');
 
 -- --------------------------------------------------------
 
@@ -327,6 +356,13 @@ CREATE TABLE `password_reset_tokens` (
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `password_reset_tokens`
+--
+
+INSERT INTO `password_reset_tokens` (`email`, `token`, `created_at`) VALUES
+('hasanrashid.cu@gmail.com', '$2y$12$lNqvpx702a5VNy.wgKmE7eDL5jurCC7liJB.cLyaCk9LoEp5j5jBa', '2025-11-07 10:28:49');
 
 -- --------------------------------------------------------
 
@@ -5489,7 +5525,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Tohidur Rahman', 'tohid@gmail.com', NULL, '$2y$12$wC7DvgCXW0Q6BNuobiqUkOG4bzrJwY/lOWvjPZlRJD1EIOQFkKyO2', NULL, '2025-10-23 09:09:20', '2025-10-23 09:09:20');
+(1, 'Tohidur Rahman', 'tohid@gmail.com', NULL, '$2y$12$wC7DvgCXW0Q6BNuobiqUkOG4bzrJwY/lOWvjPZlRJD1EIOQFkKyO2', NULL, '2025-10-23 09:09:20', '2025-10-23 09:09:20'),
+(2, 'MD. Hasanur rashid', 'hasanrashid.cu@gmail.com', NULL, '$2y$12$/QcQ9iU75TBtv8fzrUhT8.1MElQFGcLnXG.A8jsXor767uO7H/HQC', NULL, '2025-11-07 10:28:30', '2025-11-07 10:28:30'),
+(3, 'MD. Hasanur Rashid', 'hr492785@gmail.com', NULL, '$2y$12$F6hUqiyDN57HIuBqa82TVuo2Gbypj4E4Xk6T2ZSjXR6LUnuhMXvGa', 'C8psuZenyk1yTCHdjCRcDC1borrUqtsmBs9CJIrsee4T4ooDlOSAQ0oGKoUw', '2025-11-07 10:41:45', '2025-11-07 10:47:48');
 
 -- --------------------------------------------------------
 
@@ -5504,6 +5542,13 @@ CREATE TABLE `wishlists` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `wishlists`
+--
+
+INSERT INTO `wishlists` (`id`, `user_id`, `product_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2025-10-30 10:37:21', '2025-10-30 10:37:21');
 
 --
 -- Indexes for dumped tables
@@ -5674,19 +5719,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -5716,13 +5761,13 @@ ALTER TABLE `upazilas`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `wishlists`
 --
 ALTER TABLE `wishlists`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

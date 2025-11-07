@@ -32,8 +32,8 @@
                                     <td>{{$d->coupon_id}}</td>
                                     <td>{{$d->total_price}}</td>
                                     <td>{{$d->final_price}}</td>
-                                    <td>{{$d->district_id}}</td>
-                                    <td>{{$d->division_id}}</td>
+                                    <td>{{ $d->district?->name ?? '-' }}</td>
+                                    <td>{{ $d->division?->name ?? '-' }}</td>
                                     <td>{{$d->notes}}</td>
                                     <td>{{$d->address}}</td>
                                     <td>{{$d->user_id}}</td>

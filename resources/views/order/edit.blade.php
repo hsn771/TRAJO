@@ -53,7 +53,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $status=array('pending','delivered to warehouse','cancel'); @endphp
+                                @php
+                                    $status = [
+                                        'pending' => 'Pending',
+                                        'delivered' => 'Delivered',
+                                        'cancel' => 'Canceled'
+                                    ];
+                                @endphp
                                 @forelse ($order->orderItems as $index => $or)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
@@ -62,11 +68,12 @@
                                         <td>{{ $or->quantity }}</td>
                                         <td>{{ number_format($or->unit_price ?? $or->price,2) }}</td>
                                         <td>{{ number_format($or->line_total ?? ($or->quantity * ($or->unit_price ?? $or->price)),2) }}</td>
-                                        <td> {{$status[$or->status]}}</td>
+                                        <td>{{ $status[$or->status] ?? $or->status }}</td>
                                     </tr>
                                 @empty
                                     <tr><td colspan="7">No items found.</td></tr>
                                 @endforelse
+
                             </tbody>
                         </table>
                     </div>
@@ -78,7 +85,7 @@
                         <option value="">Select Status</option>
                         <option value="pending" @if($order->status=="pending") selected @endif>Pending</option>
                         <option value="delivered" @if($order->status=="delivered") selected @endif>Delivered</option>
-                        <option value="cancel" @if($order->status=="cancel") selected @endif>Cancel</option>
+                        <option value="cancel" @if($order->status=="canceled") selected @endif>Cancel</option>
                     </select>
                 </div>
 

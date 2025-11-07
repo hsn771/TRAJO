@@ -58,28 +58,52 @@
     <header class="header">
         <div class="header__top">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-7">
-                        <div class="header__top__left">
-                            <p>Free shipping, 30-day return or refund guarantee.</p>
+    <div class="row">
+        <div class="col-lg-6 col-md-7">
+            <div class="header__top__left">
+                <p>Free shipping, 30-day return or refund guarantee.</p>
+            </div>
+        </div>
+
+        <!-- Check if user is guest or authenticated -->
+        <div class="col-lg-6 col-md-5">
+            <div class="header__top__right">
+                <div class="header__top__links">
+                    @guest('customer')
+                        <!-- Links for guest users (Login/Register) -->
+                        <a href="{{ route('customer.login') }}">Customer Sign in</a>
+                        <a href="{{ route('customer.register') }}">Customer Register</a>
+                    @else
+                        <!-- Dropdown for authenticated users -->
+                         <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ Auth::guard('customer')->user()->name }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('customer_panel.dashboard') }}">Dashboard</a>
+                                </li>
+                                <li>
+                                    <form method="POST" action="{{ route('customer.logout') }}">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                    <div class="col-lg-6 col-md-5">
-                        <div class="header__top__right">
-                            <div class="header__top__links">
-                                <a href="{{ route('customer.login') }}">Customer Sign in</a>
-                                <a href="{{ route('customer.register') }}">Customer Register</a>
-                            </div>
-                        </div>
-                    </div>
+                    @endguest
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
         </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="{{ asset('assets/img/logo.png')}}" alt=""></a>
+                        <a href="./index.html"><img src="{{ asset('assets/img/trajo.jpg')}}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
@@ -160,10 +184,10 @@
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         <p>Copyright ©
                             <script>
-                                document.write(new Date().getFullYear());
-                            </script>2020
+                                document.write(getFullYear());
+                            </script>2025
                             All rights reserved | This template is made with <i class="fa fa-heart-o"
-                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            aria-hidden="true"></i> by <a href="#" target="_blank">Hasanur Rashid</a>
                         </p>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </div>
@@ -186,6 +210,7 @@
 
     <!-- Js Plugins -->
     <script src="{{asset ('assets/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{asset ('assets/js/bootstrap.min.js') }}"></script>
     <script src="{{asset ('assets/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{asset ('assets/js/jquery.nicescroll.min.js') }}"></script>

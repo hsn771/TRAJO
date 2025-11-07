@@ -61,24 +61,24 @@
                     <div class="col-lg-6 col-md-5">
                         <div class="header__top__right">
                             <div class="header__top__links">
-                                @if(Auth::guard('customer')->check())
+                               @if(Auth::guard('customer')->check())
                                     <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        {{ Auth::guard('customer')->user()->name }}
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('customer_panel.dashboard') }}">Dashboard</a>
-                                        </li>
-                                        <li>
-                                            <form method="POST" action="{{ route('customer.logout') }}">
-                                                @csrf
-                                                <button type="submit" class="dropdown-item">Logout</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-                                
+                                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ Auth::guard('customer')->user()->name }}
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('customer_panel.dashboard') }}">Dashboard</a>
+                                            </li>
+                                            <li>
+                                                <form method="POST" action="{{ route('customer.logout') }}">
+                                                    @csrf
+                                                    <button type="submit" class="dropdown-item">Logout</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header__logo">
-                        <a href="{{ route('welcome') }}"><img src="{{ asset('assets/img/logo.png') }}" alt=""></a>
+                        <a href="{{ route('welcome') }}"><img src="{{ asset('assets/img/trajo.jpg') }}" alt=""></a>
                     </div>
                 </div>
 
@@ -180,10 +180,10 @@
                     <div class="footer__copyright__text">
                         <p>
                             Copyright &copy;
-                            <script>document.write(new Date().getFullYear());</script>
+                            <script>document.write(getFullYear());</script>
                             All rights reserved | This template is made with
                             <i class="fa fa-heart-o" aria-hidden="true"></i> by
-                            <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            <a href="#" target="_blank">Hasanur Rashid</a>
                         </p>
                     </div>
                 </div>

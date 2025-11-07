@@ -50,6 +50,12 @@
                                 <label class="form-check-label" for="remember">Remember Me</label>
                             </div>
                         </div>
+                        <!-- Forgot Password -->
+                        <div class="text-center mt-3">
+                            <a href="{{ route('password.request') }}" class="text-muted">
+                                Forgot Your Password?
+                            </a>
+                        </div>
 
                         <!-- Submit Button -->
                         <div class="form-group text-center">
