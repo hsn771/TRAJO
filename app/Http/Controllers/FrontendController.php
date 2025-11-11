@@ -10,4 +10,9 @@ class FrontendController extends Controller
         $products = \App\Models\Product::all();
         return view ('welcome', compact('products'));
     }
+
+     function shop() {
+        // $products = \App\Models\Product::all();
+        return view ('shop');
+    }
 }
