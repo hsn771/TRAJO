@@ -99,6 +99,7 @@
                     <nav class="header__menu mobile-menu">
                         <ul>
                             <li class="active"><a href="{{ route('welcome') }}">Home</a></li>
+                            <li><a href="{{ route('shop') }}">Home</a></li>
                             <li><a href="{{ route('customer_panel.order.index') }}">Orders</a></li>
                         </ul>
                     </nav>

@@ -1,93 +1,54 @@
-@extends('layouts.app_back')
-@section('pageTitle','Order Invoice')
-@section('content')
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice #{{ $order->id }}</title>
+    <style>
+        body { font-family: Arial; margin:0; padding:0; }
+        .invoice-wrapper { padding: 20px; width: 800px; margin:auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f2f2f2; }
+        @media print {
+            .invoice-wrapper { margin:0; width:100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-wrapper">
+        <h2>TRAJO Clothing.</h2>
+        <p>Address: Halishahar, Chattogram</p>
+        <p>Phone: +8801625127621 | Email: trajo@gmail.com</p>
 
-{{-- <div class="row">
-    <div class="col-lg-12">
-        <div class="card shadow">
-            <div class="card-body"> --}}
-<div class="body-wrapper-inner">
-    <div class="container-fluid">
-        <!--  Row 1 -->
-        <div class="row">
-                
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Order Invoice</h2>
-                    <a href="javascript:window.print()" class="btn btn-primary">Print</a>
-                </div>
+        <h3>Invoice #{{ $order->id }}</h3>
+        <p>Customer: {{ $order->customer?->name }}</p>
+        <p>Date: {{ $order->created_at->format('d M Y') }}</p>
 
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Customer</th>
-                        <td>{{ $order->customer?->name }}</td>
-                    </tr>
-                    <tr>
-                        <th>Invoice No.</th>
-                        <td>{{ $order->id }}</td>
-                    </tr>
-                    <tr>
-                        <th>Order Date</th>
-                        <td>{{ $order->created_at->format('d-m-Y H:i') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Shipping Address</th>
-                        <td>
-                            {{ $order->address }} <br>
-                            {{ $order->district?->name }} <br>
-                            {{ $order->division?->name }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Status</th>
-                        <td><span class="badge bg-info">{{ ucfirst($order->status) }}</span></td>
-                    </tr>
-                </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($order->orderItems as $item)
+                <tr>
+                    <td>{{ $item->product?->name }}</td>
+                    <td>{{ $item->quantity }}</td>
+                    <td>{{ number_format($item->unit_price, 2) }} BDT</td>
+                    <td>{{ number_format($item->line_total, 2) }} BDT</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
 
-                <h4 class="mt-4">Order Items</h4>
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Unit Price</th>
-                            <th>Line Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($order->orderItems as $item)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->product?->name }}</td>
-                                <td>{{ $item->quantity }}</td>
-                                <td>{{ number_format($item->unit_price, 2) }} BDT</td>
-                                <td>{{ number_format($item->line_total, 2) }} BDT</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center">No items found</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="4" class="text-end">Total Price:</th>
-                            <th>{{ number_format($order->total_price, 2) }} BDT</th>
-                        </tr>
-                        <tr>
-                            <th colspan="4" class="text-end">Discount Amount:</th>
-                            <th>{{ number_format($order->discount_amount, 2) }} BDT</th>
-                        </tr>
-                        <tr>
-                            <th colspan="4" class="text-end">Final Price:</th>
-                            <th>{{ number_format($order->final_price, 2) }} BDT</th>
-                        </tr>
-                    </tfoot>
-                </table>
+        <p>Subtotal: {{ number_format($order->total_price, 2) }} BDT</p>
+        <p>Discount: {{ number_format($order->discount_amount, 2) }} BDT</p>
+        <p><strong>Total: {{ number_format($order->final_price, 2) }} BDT</strong></p>
 
-            </div>
-        </div>
-    {{-- </div> --}}
-</div>
-
-@endsection
+        <button onclick="window.print()">Print Invoice</button>
+    </div>
+</body>
+</html>

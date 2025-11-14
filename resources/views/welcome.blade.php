@@ -128,7 +128,7 @@
                                 <i class="fa fa-star-o"></i>
                             </div>
                             <h5>BDT{{$product->price}}</h5>
-                            <div class="product__color__select">
+                            <!-- <div class="product__color__select">
                                 <label for="pc-1">
                                     <input type="radio" id="pc-1">
                                 </label>
@@ -138,7 +138,7 @@
                                 <label class="grey" for="pc-3">
                                     <input type="radio" id="pc-3">
                                 </label>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                    

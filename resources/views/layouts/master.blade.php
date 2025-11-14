@@ -110,7 +110,7 @@
                     <nav class="header__menu mobile-menu">
                         <ul>
                             <li><a href="{{ route('welcome') }}">Home</a></li>
-                            <li><a href="{{ route(name: 'shop') }}">Shop</a></li>
+                            <li><a href="{{ route( 'shop') }}">Shop</a></li>
                             <li><a href="./contact.html">Contacts</a></li>
                         </ul>
                     </nav>

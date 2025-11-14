@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use  App\Http\Controllers\FrontendController as front;
+use  App\Http\Controllers\FrontendController as Front;
 
-use App\Http\Controllers\DashboardController as dash;
+use App\Http\Controllers\DashboardController as Dash;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use  App\Http\Controllers\CouponController;
@@ -17,6 +17,8 @@ use App\Http\Controllers\Customer\CustomerAuthController;
 use App\Http\Controllers\Customer\CustomerDashboardController;
 use App\Http\Controllers\Customer\CustomerOrderController;
 use App\Http\Controllers\Customer\WishlistController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,12 +35,12 @@ use App\Http\Controllers\Customer\WishlistController;
 //     return view('welcome');
 // });
 
-Route::get('/',[front::class,'welcome'])->name ('welcome');
+Route::get('/',[Front::class,'welcome'])->name ('welcome');
 Route::get('/shop',[front::class,'shop'])->name ('shop');
 
 Auth::routes();
 Route::middleware('auth:web')->group(function () {
-    Route::get('dashboard', [dash::class, 'index'])->name('dashboard');
+    Route::get('dashboard', [Dash::class, 'index'])->name('dashboard');
     Route::resource('category', CategoryController::class);
     Route::resource('product', ProductController::class);
     Route::resource('coupon', CouponController::class);
@@ -79,3 +81,6 @@ Route::post('checkout/place_order',[CheckoutController::class,'placeOrder'])->na
             
         });
         });
+
+
+        
