@@ -29,5 +29,12 @@ class FrontendController extends Controller
 
         return view('shop', compact('categories', 'products'));
     }
+
+    public function showProduct($id)
+{
+    $product = Product::findOrFail($id);
+    return view('product.show', compact('product'));
+}
+
 }
 

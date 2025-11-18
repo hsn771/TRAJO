@@ -36,7 +36,8 @@ use App\Http\Controllers\Customer\WishlistController;
 // });
 
 Route::get('/',[Front::class,'welcome'])->name ('welcome');
-Route::get('/shop',[front::class,'shop'])->name ('shop');
+Route::get('/shop',[Front::class,'shop'])->name ('shop');
+Route::get('/product/{id}', [Front::class, 'showProduct'])->name('product.show');
 
 Auth::routes();
 Route::middleware('auth:web')->group(function () {
