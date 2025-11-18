@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\product;
-use App\Models\category;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -13,7 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $data=product::all();
+        $data = Product::all();
         return view('product.index', compact('data'));
     }
 
@@ -22,8 +22,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $category=category::all();
-        return view('product.create',compact('category'));
+        $category = Category::all();
+        return view('product.create', compact('category'));
     }
 
     /**
@@ -31,64 +31,116 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $input=$request->all();
-        if($request->hasFile('image_url')){
-            $fileName = time().'.'.$request->image_url->extension();  
+        $input = $request->except('gallery_images');
+
+        /** Save Main Image */
+        if ($request->hasFile('image_url')) {
+            $fileName = time() . '.' . $request->image_url->extension();
             $request->image_url->move(public_path('uploads'), $fileName);
-            $input['image_url']=$fileName;
+            $input['image_url'] = $fileName;
         }
 
-        product::create($input);
+        /** Create Product */
+        $product = Product::create($input);
+
+        /** Save Gallery Images */
+        $gallery = [];
+
+        if ($request->hasFile('gallery_images')) {
+            foreach ($request->file('gallery_images') as $img) {
+                $imgName = time() . '_' . $img->getClientOriginalName();
+                $img->move(public_path('uploads/gallery'), $imgName);
+                $gallery[] = $imgName;
+            }
+        }
+
+        $product->gallery_images = $gallery;
+        $product->save();
+
         return redirect()->route('product.index');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified product (Product Details Page).
      */
-    public function show(product $product)
+    public function show($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return view('product.show', compact('product'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(product $product)
+    public function edit(Product $product)
     {
-        $category=category::all();
-        return view('product.edit',compact('category', 'product'));
+        $category = Category::all();
+        return view('product.edit', compact('category', 'product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, product $product)
+    public function update(Request $request, Product $product)
     {
-        $product->update($request->all());
-        // return redirect()->route('product.index');
+        $input = $request->except(['image_url', 'gallery_images']);
+        $product->update($input);
 
+        /** Update Main Image */
         if ($request->hasFile('image_url')) {
-       
-        if ($product->image_url && file_exists(public_path('uploads/'.$product->image_url))) {
-            unlink(public_path('uploads/'.$product->image_url));
+
+            // Delete old image
+            if ($product->image_url && file_exists(public_path('uploads/' . $product->image_url))) {
+                unlink(public_path('uploads/' . $product->image_url));
+            }
+
+            $fileName = time() . '_' . $request->file('image_url')->getClientOriginalName();
+            $request->file('image_url')->move(public_path('uploads'), $fileName);
+            $product->image_url = $fileName;
         }
-        $fileName = time().'_'.$request->file('image_url')->getClientOriginalName();
-        $request->file('image_url')->move(public_path('uploads'), $fileName);
 
-        $product->image_url = $fileName;
-    }
+        /** Add New Gallery Images */
+        $existingGallery = $product->gallery_images ?? [];
+        $newGallery = [];
 
-    $product->save();
+        if ($request->hasFile('gallery_images')) {
+            foreach ($request->file('gallery_images') as $img) {
+                $imgName = time() . '_' . $img->getClientOriginalName();
+                $img->move(public_path('uploads/gallery'), $imgName);
+                $newGallery[] = $imgName;
+            }
+        }
 
-    return redirect()->route('product.index');
+        // Merge old + new
+        $product->gallery_images = array_merge($existingGallery, $newGallery);
+
+        $product->save();
+
+        return redirect()->route('product.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(product $product)
+    public function destroy(Product $product)
     {
+        /** Delete main image */
+        if ($product->image_url && file_exists(public_path('uploads/' . $product->image_url))) {
+            unlink(public_path('uploads/' . $product->image_url));
+        }
+
+        /** Delete gallery images */
+        if (!empty($product->gallery_images)) {
+            foreach ($product->gallery_images as $img) {
+                $path = public_path('uploads/gallery/' . $img);
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+            }
+        }
+
         $product->delete();
+
         return redirect()->back();
     }
 }

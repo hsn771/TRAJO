@@ -61,7 +61,7 @@
     <div class="row">
         <div class="col-lg-6 col-md-7">
             <div class="header__top__left">
-                <p>Free shipping, 30-day return or refund guarantee.</p>
+                <p>Get 20% discount in your first order.</p>
             </div>
         </div>
 

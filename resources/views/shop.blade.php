@@ -85,25 +85,24 @@
         @forelse ($products as $product)
         <div class="col-lg-3 col-md-6 col-sm-6 mix new-arrivals">
             <div class="product__item">
-                <div class="product__item__pic set-bg" data-setbg="{{asset('uploads/'.$product->image_url)}}">
-                    <span class="label">New</span>
-                    <ul class="product__hover">
-                        <!-- Wishlist -->
-                        <li>
-                            <a href="javascript:void(0)" onclick="addToWishlist({{ $product->id }})">
-                                <img src="{{ asset('assets/img/icon/heart.png') }}" alt="">
-                            </a>
-                        </li>
-                        <!-- Compare -->
-                        <li>
-                            <a href="#"><img src="{{ asset('assets/img/icon/compare.png') }}" alt=""> <span>Compare</span></a>
-                        </li>
-                        <!-- Quick View / Search -->
-                        <li>
-                            <a href="#"><img src="{{ asset('assets/img/icon/search.png') }}" alt=""></a>
-                        </li>
-                    </ul>
-                </div>
+                <a href="{{ route('product.show', $product->id) }}">
+                    <div class="product__item__pic set-bg" data-setbg="{{ asset('uploads/' . $product->image_url) }}">
+                        <span class="label">New</span>
+                        <ul class="product__hover">
+                            <li>
+                                <a href="javascript:void(0)" onclick="addToWishlist({{ $product->id }})">
+                                    <img src="{{ asset('assets/img/icon/heart.png') }}" alt="">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#"><img src="{{ asset('assets/img/icon/compare.png') }}" alt=""> <span>Compare</span></a>
+                            </li>
+                            <li>
+                                <a href="#"><img src="{{ asset('assets/img/icon/search.png') }}" alt=""></a>
+                            </li>
+                        </ul>
+                    </div>
+                </a>
                 <div class="product__item__text">
                     <h6>{{ $product->name }}</h6>
                     <a href="javascript:void(0)" onclick="addToCart({{ $product->id }})" class="add-cart">+ Add To Cart</a>

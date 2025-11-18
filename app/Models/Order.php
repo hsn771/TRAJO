@@ -36,4 +36,8 @@ class Order extends Model
     {
         return $this->belongsTo(Division::class);
     }
+    public function items()
+{
+    return $this->hasMany(OrderItem::class);
+}
 }

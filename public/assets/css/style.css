@@ -3848,4 +3848,12 @@ ol {
 	.categories__text:before {
 		height: 250px;
 	}
+
+	.product__hover {
+    pointer-events: none !important;
+}
+
+.product__hover a {
+    pointer-events: auto !important;
+}
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2025 at 06:18 PM
+-- Generation Time: Nov 18, 2025 at 04:58 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -95,7 +95,8 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id`, `name`, `email`, `phone`, `address`, `division_id`, `district_id`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'Jesan', 'jesan@gmail.com', '013', 'Halishahar', NULL, NULL, '$2y$12$wMhxF0YtUdVUXrn4mZeLV.rCuEKyCIJOXR0nh8jIvTg5eopvbMdhe', '2025-10-29 11:52:08', '2025-10-29 11:52:08');
+(1, 'Jesan', 'jesan@gmail.com', '013', 'Halishahar', NULL, NULL, '$2y$12$wMhxF0YtUdVUXrn4mZeLV.rCuEKyCIJOXR0nh8jIvTg5eopvbMdhe', '2025-10-29 11:52:08', '2025-10-29 11:52:08'),
+(2, 'MD. Hasanur rashid', 'hr492785@gmail.com', '01625142403', 'Halishahar', 1, 8, NULL, '2025-11-18 08:18:06', '2025-11-18 08:18:06');
 
 -- --------------------------------------------------------
 
@@ -277,7 +278,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (16, '2025_10_29_171852_create_order_items_table', 4),
 (17, '2025_10_29_182734_create_wishlists_table', 4),
 (18, '2025_11_07_145855_add_columns_to_orders_table', 5),
-(19, '2025_11_07_150544_add_columns_to_orders_items_table', 6);
+(19, '2025_11_07_150544_add_columns_to_orders_items_table', 6),
+(20, '2025_11_18_120158_add_gallery_images_to_products_table', 7),
+(21, '2025_11_18_140645_add_size_to_order_items_table', 8),
+(22, '2025_11_18_153000_add_payment_fields_to_orders_table', 9);
 
 -- --------------------------------------------------------
 
@@ -298,6 +302,8 @@ CREATE TABLE `orders` (
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `discount_amount` decimal(10,2) NOT NULL DEFAULT 0.00,
   `status` varchar(50) NOT NULL DEFAULT 'pending',
+  `payment_method` varchar(255) DEFAULT NULL,
+  `transaction_id` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -306,8 +312,15 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `customer_id`, `coupon_id`, `total_price`, `final_price`, `district_id`, `division_id`, `notes`, `address`, `user_id`, `discount_amount`, `status`, `created_at`, `updated_at`) VALUES
-(3, NULL, NULL, 699.00, 699.00, 8, 1, 'Please deliver the product as early as possible.', 'Halishahar', 1, 0.00, 'delivered', '2025-11-07 09:09:13', '2025-11-07 09:27:55');
+INSERT INTO `orders` (`id`, `customer_id`, `coupon_id`, `total_price`, `final_price`, `district_id`, `division_id`, `notes`, `address`, `user_id`, `discount_amount`, `status`, `payment_method`, `transaction_id`, `created_at`, `updated_at`) VALUES
+(3, NULL, NULL, 699.00, 699.00, 8, 1, 'Please deliver the product as early as possible.', 'Halishahar', 1, 0.00, 'delivered', NULL, NULL, '2025-11-07 09:09:13', '2025-11-07 09:27:55'),
+(4, NULL, NULL, 699.00, 699.00, 8, 1, 'dfvsdfv', 'Halishahar', 2, 0.00, 'delivered', NULL, NULL, '2025-11-18 08:18:06', '2025-11-18 08:40:30'),
+(5, NULL, NULL, 1398.00, 1398.00, 8, 1, 'dfhdhb', 'Halishahar', 1, 0.00, 'pending', NULL, NULL, '2025-11-18 08:43:06', '2025-11-18 08:43:06'),
+(6, NULL, NULL, 599.00, 599.00, 8, 1, 'sdvsd', 'Halishahar', 1, 0.00, 'pending', NULL, NULL, '2025-11-18 08:56:36', '2025-11-18 08:56:36'),
+(7, NULL, NULL, 599.00, 599.00, 8, 1, 'dfgbdfbv', 'Halishahar', 1, 0.00, 'pending', NULL, NULL, '2025-11-18 08:58:32', '2025-11-18 08:58:32'),
+(8, NULL, NULL, 699.00, 699.00, 8, 1, 'fgdfb', 'Halishahar', 1, 0.00, 'pending', NULL, NULL, '2025-11-18 09:00:27', '2025-11-18 09:00:27'),
+(9, NULL, NULL, 699.00, 699.00, 8, 1, 'dzfvbdfb', 'Halishahar', 1, 0.00, 'pending', NULL, NULL, '2025-11-18 09:18:16', '2025-11-18 09:18:16'),
+(10, NULL, NULL, 1198.00, 1198.00, 8, 1, 'gbhnrfgbhn', 'Halishahar', 1, 0.00, 'pending', 'bkash', '5544fgfgr', '2025-11-18 09:33:29', '2025-11-18 09:33:29');
 
 -- --------------------------------------------------------
 
@@ -320,6 +333,7 @@ CREATE TABLE `order_items` (
   `order_id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
   `quantity` int(11) NOT NULL DEFAULT 1,
+  `size` varchar(255) DEFAULT NULL,
   `price` decimal(10,2) NOT NULL,
   `line_total` decimal(10,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -330,8 +344,15 @@ CREATE TABLE `order_items` (
 -- Dumping data for table `order_items`
 --
 
-INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`, `line_total`, `created_at`, `updated_at`) VALUES
-(1, 3, 1, 1, 699.00, 699.00, '2025-11-07 09:09:13', '2025-11-07 09:09:13');
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `size`, `price`, `line_total`, `created_at`, `updated_at`) VALUES
+(1, 3, 1, 1, NULL, 699.00, 699.00, '2025-11-07 09:09:13', '2025-11-07 09:09:13'),
+(2, 4, 3, 1, 'M', 699.00, 699.00, '2025-11-18 08:18:06', '2025-11-18 08:18:06'),
+(3, 5, 3, 2, 'XL', 699.00, 1398.00, '2025-11-18 08:43:06', '2025-11-18 08:43:06'),
+(4, 6, 2, 1, 'XL', 599.00, 599.00, '2025-11-18 08:56:36', '2025-11-18 08:56:36'),
+(5, 7, 2, 1, 'L', 599.00, 599.00, '2025-11-18 08:58:32', '2025-11-18 08:58:32'),
+(6, 8, 1, 1, 'L', 699.00, 699.00, '2025-11-18 09:00:27', '2025-11-18 09:00:27'),
+(7, 9, 3, 1, 'XL', 699.00, 699.00, '2025-11-18 09:18:16', '2025-11-18 09:18:16'),
+(8, 10, 2, 2, 'XL', 599.00, 1198.00, '2025-11-18 09:33:29', '2025-11-18 09:33:29');
 
 -- --------------------------------------------------------
 
@@ -362,7 +383,8 @@ CREATE TABLE `password_reset_tokens` (
 --
 
 INSERT INTO `password_reset_tokens` (`email`, `token`, `created_at`) VALUES
-('hasanrashid.cu@gmail.com', '$2y$12$lNqvpx702a5VNy.wgKmE7eDL5jurCC7liJB.cLyaCk9LoEp5j5jBa', '2025-11-07 10:28:49');
+('hasanrashid.cu@gmail.com', '$2y$12$lNqvpx702a5VNy.wgKmE7eDL5jurCC7liJB.cLyaCk9LoEp5j5jBa', '2025-11-07 10:28:49'),
+('hr492785@gmail.com', '$2y$12$O1cs4DEcdlmKUdFEML2jUuPY6NShP9FT3v0HmNZd7N2qDFju7LGRi', '2025-11-15 10:42:00');
 
 -- --------------------------------------------------------
 
@@ -397,16 +419,18 @@ CREATE TABLE `products` (
   `category_id` bigint(20) UNSIGNED DEFAULT NULL,
   `image_url` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `gallery_images` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`gallery_images`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `description`, `price`, `category_id`, `image_url`, `created_at`, `updated_at`) VALUES
-(1, 'Mens Premium Sports Joggers - Interactive', 'Lightweight, breathable pants designed for comfort and movement.', 699.00, 1, '1761755414.jpg', '2025-10-29 10:30:14', '2025-10-29 10:32:35'),
-(2, 'Premium Boys Trouser - Ironman', 'Lightweight, breathable pants designed for comfort and movement.', 599.00, 1, '1761756650.jpg', '2025-10-29 10:50:50', '2025-10-29 10:50:50');
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `category_id`, `image_url`, `created_at`, `updated_at`, `gallery_images`) VALUES
+(1, 'Mens Premium Sports Joggers - Interactive', 'Lightweight, breathable pants designed for comfort and movement.', 699.00, 1, '1761755414.jpg', '2025-10-29 10:30:14', '2025-10-29 10:32:35', NULL),
+(2, 'Premium Boys Trouser - Ironman', 'Lightweight, breathable pants designed for comfort and movement.', 599.00, 1, '1761756650.jpg', '2025-10-29 10:50:50', '2025-10-29 10:50:50', NULL),
+(3, 'Long Trouser', 'Lightweight, breathable pants designed for comfort and movement.', 699.00, 1, '1763468593.jpg', '2025-11-18 06:23:13', '2025-11-18 06:23:13', '[\"1763468593_05.jpg\",\"1763468593_04.jpg\"]');
 
 -- --------------------------------------------------------
 
@@ -5548,7 +5572,8 @@ CREATE TABLE `wishlists` (
 --
 
 INSERT INTO `wishlists` (`id`, `user_id`, `product_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '2025-10-30 10:37:21', '2025-10-30 10:37:21');
+(1, 1, 1, '2025-10-30 10:37:21', '2025-10-30 10:37:21'),
+(2, 1, 2, '2025-11-14 11:02:10', '2025-11-14 11:02:10');
 
 --
 -- Indexes for dumped tables
@@ -5689,7 +5714,7 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `discounts`
@@ -5719,19 +5744,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -5743,7 +5768,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `unions`
@@ -5767,7 +5792,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `wishlists`
 --
 ALTER TABLE `wishlists`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

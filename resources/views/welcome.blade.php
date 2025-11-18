@@ -3,9 +3,11 @@
 
 <!-- Hero Section Begin -->
     <section class="hero">
+        @if(session('success')) <div class="alert alert-success alert-dismissible fade show" role="alert"> {{ session('success') }} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div> @endif
         <div class="hero__slider owl-carousel">
             <div class="hero__items set-bg" data-setbg="{{ asset('assets/img/hero/hero-1.jpg')}}">
                 <div class="container">
+                    
                     <div class="row">
                         <div class="col-xl-5 col-lg-7 col-md-8">
                             <div class="hero__text">
@@ -13,7 +15,7 @@
                                 <h2>Fall - Winter Collections 2025</h2>
                                 <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
                                 commitment to exceptional quality.</p>
-                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                <a href="{{ route( 'shop') }}" class="primary-btn">Shop now <span class="arrow_right"></span></a>
                                 <div class="hero__social">
                                     <a href="#"><i class="fa fa-facebook"></i></a>
                                     <a href="#"><i class="fa fa-twitter"></i></a>
@@ -31,7 +33,7 @@
                         <div class="col-xl-5 col-lg-7 col-md-8">
                             <div class="hero__text">
                                 <h6>Summer Collection</h6>
-                                <h2>Fall - Winter Collections 2030</h2>
+                                <h2>Fall - Winter Collections 2025</h2>
                                 <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
                                 commitment to exceptional quality.</p>
                                 <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
@@ -60,12 +62,12 @@
                             <img src="{{ asset('assets/img/banner/banner-1.jpg')}}" alt="">
                         </div>
                         <div class="banner__item__text">
-                            <h2>Clothing Collections 2030</h2>
-                            <a href="#">Shop now</a>
+                            <h2>Clothing Collections 2025</h2>
+                            <a href="{{ route( 'shop') }}">Shop now</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-5">
+                <!-- <div class="col-lg-5">
                     <div class="banner__item banner__item--middle">
                         <div class="banner__item__pic">
                             <img src="{{ asset('assets/img/banner/banner-2.jpg')}}" alt="">
@@ -86,7 +88,7 @@
                             <a href="#">Shop now</a>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
@@ -98,9 +100,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ul class="filter__controls">
-                        <li class="active" data-filter="*">Best Sellers</li>
+                        <!-- <li class="active" data-filter="*">Best Sellers</li> -->
                         <li data-filter=".new-arrivals">New Arrivals</li>
-                        <li data-filter=".hot-sales">Hot Sales</li>
+                        <!-- <li data-filter=".hot-sales">Hot Sales</li> -->
                     </ul>
                 </div>
             </div>
@@ -152,7 +154,7 @@
     <!-- Product Section End -->
 
     <!-- Categories Section Begin -->
-    <section class="categories spad">
+    <!-- <section class="categories spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -196,7 +198,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <!-- Categories Section End -->
 
     <!-- Instagram Section Begin -->

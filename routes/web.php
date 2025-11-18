@@ -51,14 +51,7 @@ Route::middleware('auth:web')->group(function () {
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
-Route::get('cart',[CartController::class,'viewCart'])->name('cart.view');
-Route::post('cart/add',[CartController::class,'addToCart'])->name('cart.add');
-Route::post('cart/update',[CartController::class,'updateCart'])->name('cart.update');
-Route::get('cart/remove/{id}',[CartController::class,'removeFromCart'])->name('cart.remove');
-Route::post('cart/check_coupon',[CartController::class,'checkCoupon'])->name('cart.check_coupon');
-Route::get('cart/count', [CartController::class, 'count'])->name('cart.count');
-Route::get('checkout',[CheckoutController::class,'checkout'])->name('checkout');
-Route::post('checkout/place_order',[CheckoutController::class,'placeOrder'])->name('checkout.place_order');
+
 
 
 // Customer Authentication Routes
@@ -77,6 +70,15 @@ Route::post('checkout/place_order',[CheckoutController::class,'placeOrder'])->na
             Route::post('wishlist/add', [WishlistController::class, 'store'])->name('wishlist.add');
             Route::delete('wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
             Route::get('wishlist/count', [WishlistController::class, 'count'])->name('wishlist.count');
+
+            Route::get('cart',[CartController::class,'viewCart'])->name('cart.view');
+            Route::post('cart/add',[CartController::class,'addToCart'])->name('cart.add');
+            Route::post('cart/update',[CartController::class,'updateCart'])->name('cart.update');
+            Route::get('cart/remove/{id}',[CartController::class,'removeFromCart'])->name('cart.remove');
+            Route::post('cart/check_coupon',[CartController::class,'checkCoupon'])->name('cart.check_coupon');
+            Route::get('cart/count', [CartController::class, 'count'])->name('cart.count');
+            Route::get('checkout',[CheckoutController::class,'checkout'])->name('checkout');
+            Route::post('checkout/place_order',[CheckoutController::class,'placeOrder'])->name('checkout.place_order');
 
             
         });

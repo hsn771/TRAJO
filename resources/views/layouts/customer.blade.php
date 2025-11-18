@@ -43,7 +43,7 @@
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__text">
-            <p>Free shipping, 30-day return or refund guarantee.</p>
+            <p>Get 20% discount in your first order.</p>
         </div>
     </div>
     <!-- Offcanvas Menu End -->
@@ -55,7 +55,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-7">
                         <div class="header__top__left">
-                            <p>Free shipping, 30-day return or refund guarantee.</p>
+                            <p>Get 20% discount in your first order.</p>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-5">
@@ -91,7 +91,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header__logo">
-                        <a href="{{ route('welcome') }}"><img src="{{ asset('assets/img/trajo.jpg') }}" alt=""></a>
+                        <a href="{{ route('welcome') }}"><img src="{{ asset('assets/img/TRAJO.png') }}" alt=""></a>
                     </div>
                 </div>
 
@@ -99,7 +99,7 @@
                     <nav class="header__menu mobile-menu">
                         <ul>
                             <li class="active"><a href="{{ route('welcome') }}">Home</a></li>
-                            <li><a href="{{ route('shop') }}">Home</a></li>
+                            <li><a href="{{ route('shop') }}">Shop</a></li>
                             <li><a href="{{ route('customer_panel.order.index') }}">Orders</a></li>
                         </ul>
                     </nav>
