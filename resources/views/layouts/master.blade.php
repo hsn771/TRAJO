@@ -117,7 +117,6 @@
                 </div>
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
-                        <a href="#" class="search-switch"><img src="{{ asset('assets/img/icon/search.png')}}" alt=""></a>
                         <a href="{{ route('wishlist.index') }}"><img src="{{ asset('assets/img/icon/heart.png')}}" alt=""></a>
                         <a href="{{ route('cart.view') }}"><img src="{{ asset('assets/img/icon/cart.png')}}" alt=""> <span></span></a>
                     </div>
@@ -126,6 +125,23 @@
             <div class="canvas__open"><i class="fa fa-bars"></i></div>
         </div>
     </header>
+     @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    <div class="container mb-4">
+        <!-- 🔍 LIVE SEARCH BAR -->
+        <div class="search-wrapper" style="position: relative; max-width: 500px; margin: auto;">
+            <input type="text" id="search-box" class="form-control" placeholder="Search products...">
+            <div id="search-results"
+                style="position:absolute; top:48px; left:0; right:0; background:#fff; border:1px solid #ddd;
+                max-height:300px; overflow-y:auto; z-index:999; display:none;">
+            </div>
+        </div>
+    </div>
     <!-- Header Section End -->
 
     @yield('content')
@@ -221,6 +237,43 @@
     <script src="{{asset ('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{asset ('assets/js/main.js') }}"></script>
     @stack('scripts')
+   
+    <script>
+document.getElementById('search-box').addEventListener('keyup', function () {
+
+    let query = this.value;
+    let results = document.getElementById('search-results');
+
+    if (query.length < 1) {
+        results.style.display = "none";
+        results.innerHTML = "";
+        return;
+    }
+
+    fetch(`/live-search?query=${query}`)
+        .then(res => res.json())
+        .then(data => {
+            let html = "";
+
+            if (data.length > 0) {
+                data.forEach(product => {
+                    html += `
+                        <a href="/product/${product.id}" 
+                           class="d-block p-2 border-bottom text-dark text-decoration-none">
+                            <strong>${product.name}</strong><br>
+                            <small>BDT ${product.price}</small>
+                        </a>`;
+                });
+            } else {
+                html = `<p class="p-2 m-0">No products found</p>`;
+            }
+
+            results.style.display = "block";
+            results.innerHTML = html;
+        });
+});
+</script>
+    
 	<script>
 		function addToCart(productId) {
 			fetch("{{ route('cart.add') }}", {

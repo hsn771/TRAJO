@@ -13,6 +13,24 @@ class FrontendController extends Controller
         return view('welcome', compact('products'));
     }
 
+    public function liveSearch(Request $request)
+{
+    $query = $request->input('query'); // <-- FIXED
+
+    if (!$query) {
+        return response()->json([]);
+    }
+
+    $products = Product::where('name', 'LIKE', "%{$query}%")
+        ->select('id', 'name', 'price')
+        ->take(10)
+        ->get();
+
+    return response()->json($products);
+}
+
+
+
     public function shop(Request $request) {
         $categoryId = $request->category_id;
         $search = $request->search;
